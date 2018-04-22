@@ -2,7 +2,7 @@
 
 This react-native mobile application (Android) allows users to select andd convert between two currencies.
 
-# Link to apk
+### Link to apk
 
 Here is a link to the expo app: https://exp.host/@karoldavid/currencyconversion
 
