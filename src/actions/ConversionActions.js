@@ -2,11 +2,15 @@ import {
 	AMOUNT_CHANGE,
 	CURRENCY_CHANGE,
 	CONVERT_CURRENCY,
-	SET_CONVERSIONS
+	SET_CONVERSIONS,
+	FETCH_CONVERSIONS
 } from "./types";
 import { fetchCurrencyConversions } from "../api/api";
 
 export const getCurrencyConversions = () => async dispatch => {
+	dispatch({
+		type: FETCH_CONVERSIONS
+	})
 	let data = await fetchCurrencyConversions();
 
 	dispatch({

@@ -2,6 +2,7 @@ import {
 	AMOUNT_CHANGE,
 	CURRENCY_CHANGE,
 	CONVERT_CURRENCY,
+	FETCH_CONVERSIONS,
 	SET_CONVERSIONS
 } from "../actions/types";
 
@@ -14,15 +15,23 @@ const INITIAL_STATE = {
 	amount: "0.00",
 	fromCurrency: "EUR",
 	toCurrency: "USD",
-	convertedAmount: ""
+	convertedAmount: "",
+	loading: false
 };
 
 export default (state = INITIAL_STATE, action) => {
 	switch (action.type) {
+		case FETCH_CONVERSIONS:
+			return {
+				...state,
+				loading: true
+			};
+
 		case SET_CONVERSIONS:
 			const { base, time, rates } = action.payload;
 			return {
 				...state,
+				loading: false,
 				base: base,
 				time: time,
 				rates: [...rates, { currency: base, rate: "1.00" }]

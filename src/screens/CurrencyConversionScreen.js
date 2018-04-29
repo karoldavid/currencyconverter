@@ -7,13 +7,12 @@ import {
 	Text,
 	TextInput,
 	Picker,
-	KeyboardAvoidingView,
 	TouchableWithoutFeedback,
 	Keyboard,
-	Dimensions
+	Dimensions,
+	ActivityIndicator
 } from "react-native";
 import { Button, FormLabel, FormInput } from "react-native-elements";
-import { fetchExchangeRates } from "../api/api";
 import * as actions from "../actions";
 
 class CurrencyConversionScreen extends Component {
@@ -48,51 +47,65 @@ class CurrencyConversionScreen extends Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				<View style={{ flexDirection: "row" }}>
-					<Text style={{ marginTop: 15 }}>from</Text>
-					{this.currencyPicker("fromCurrency")}
-					<Text style={{ marginTop: 15 }}>to</Text>
-					{this.currencyPicker("toCurrency")}
-				</View>
-
-				<TouchableWithoutFeedback
-					onPress={Keyboard.dismiss}
-					accessible={false}
-				>
-					<View style={styles.container}>
-						<FormLabel>Amount</FormLabel>
-						<FormInput
-							containerStyle={{
-								width: Dimensions.get("window").width * 0.4
-							}}
-							placeholder="Please Enter Amount"
-							returnKeyType="done"
-							keyboardType="numeric"
-							maxLength={10}
-							value={this.props.amount}
-							onChangeText={amount =>
-								this.props.amountChange(amount)
-							}
-						/>
+				{this.props.loading ? (
+					<View>
+						<ActivityIndicator size="large" color="#0000ff" />
 					</View>
-				</TouchableWithoutFeedback>
+				) : (
+					<View>
+						<View style={{ flexDirection: "row" }}>
+							<Text style={{ marginTop: 15 }}>from</Text>
+							{this.currencyPicker("fromCurrency")}
+							<Text style={{ marginTop: 15 }}>to</Text>
+							{this.currencyPicker("toCurrency")}
+						</View>
 
-				<View style={{ flex: 1 }}>
-					<Button
-						title="CONVERT"
-						onPress={() => {
-							Keyboard.dismiss();
-							this.props.convertCurrency();
-						}}
-					/>
-				</View>
-				<View style={{ flex: 1 }}>
-					<Text>
-						{`${this.props.amount} ${this.props.fromCurrency}`} is
-						{` ${Number(this.props.convertedAmount).toFixed(2)}`}
-						{` ${this.props.toCurrency}`}
-					</Text>
-				</View>
+						<TouchableWithoutFeedback
+							onPress={Keyboard.dismiss}
+							accessible={false}
+						>
+							<View style={styles.container}>
+								<FormLabel>Amount</FormLabel>
+								<FormInput
+									containerStyle={{
+										width:
+											Dimensions.get("window").width * 0.4
+									}}
+									placeholder="Please Enter Amount"
+									returnKeyType="done"
+									keyboardType="numeric"
+									maxLength={10}
+									value={this.props.amount}
+									onChangeText={amount =>
+										this.props.amountChange(amount)
+									}
+								/>
+							</View>
+						</TouchableWithoutFeedback>
+
+						<View style={{ flex: 1 }}>
+							<Button
+								title="CONVERT"
+								onPress={() => {
+									Keyboard.dismiss();
+									this.props.convertCurrency();
+								}}
+							/>
+						</View>
+						<View style={{ flex: 1 }}>
+							<Text>
+								{`${this.props.amount} ${
+									this.props.fromCurrency
+								}`}{" "}
+								is
+								{` ${Number(this.props.convertedAmount).toFixed(
+									2
+								)}`}
+								{` ${this.props.toCurrency}`}
+							</Text>
+						</View>
+					</View>
+				)}
 			</View>
 		);
 	}
@@ -108,14 +121,15 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({
-	conversion: { rates, fromCurrency, toCurrency, amount, convertedAmount }
+	conversion: { rates, fromCurrency, toCurrency, amount, convertedAmount, loading }
 }) => {
 	return {
 		rates: _.orderBy(rates, "currency", "asc"),
 		fromCurrency,
 		toCurrency,
 		amount,
-		convertedAmount
+		convertedAmount,
+		loading
 	};
 };
 
