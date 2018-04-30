@@ -15,6 +15,15 @@ import {
 import { Button, FormLabel, FormInput } from "react-native-elements";
 import * as actions from "../actions";
 
+// @TODO: show error message when fetching data failed
+// @TODO: store currency conversion json locally in async storage
+// @TODO: check date on each conversion and fetch currency conversion data again when new day
+// @TODO: store list of each conversion locally
+// @TODO: show list with user's past conversions
+// @TODO:
+// @TODO: improve UI
+// @TODO: implement unit tests
+
 class CurrencyConversionScreen extends Component {
 	static navigationOptions = {
 		title: "Currency Converter"
@@ -51,7 +60,7 @@ class CurrencyConversionScreen extends Component {
 					<View>
 						<ActivityIndicator size="large" color="#0000ff" />
 					</View>
-				) : (
+				) : !this.props.error ? (
 					<View>
 						<View style={{ flexDirection: "row" }}>
 							<Text style={{ marginTop: 15 }}>from</Text>
@@ -105,6 +114,10 @@ class CurrencyConversionScreen extends Component {
 							</Text>
 						</View>
 					</View>
+				) : (
+					<View>
+						<Text>Something went wrong</Text>
+					</View>
 				)}
 			</View>
 		);
@@ -121,7 +134,15 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({
-	conversion: { rates, fromCurrency, toCurrency, amount, convertedAmount, loading }
+	conversion: {
+		rates,
+		fromCurrency,
+		toCurrency,
+		amount,
+		convertedAmount,
+		loading,
+		error
+	}
 }) => {
 	return {
 		rates: _.orderBy(rates, "currency", "asc"),
@@ -129,7 +150,8 @@ const mapStateToProps = ({
 		toCurrency,
 		amount,
 		convertedAmount,
-		loading
+		loading,
+		error
 	};
 };
 
