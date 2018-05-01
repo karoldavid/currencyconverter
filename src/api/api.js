@@ -2,7 +2,7 @@ import axios from "axios";
 import { AsyncStorage } from "react-native";
 
 const BASE_URL = "https://txf-ecb.glitch.me/";
-const ENDPOINT = "rats/";
+const ENDPOINT = "rates/";
 
 const CURRENCY_CONVERSIONS_STORAGE_KEY =
 	"CURRENCY_CONVERSIONS_STORAGE_KEY:rates";

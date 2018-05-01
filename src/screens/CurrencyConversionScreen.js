@@ -92,7 +92,7 @@ class CurrencyConversionScreen extends Component {
 							</View>
 						</TouchableWithoutFeedback>
 
-						<View style={{ flex: 1 }}>
+						<View style={styles.container}>
 							<Button
 								title="CONVERT"
 								onPress={() => {
@@ -101,7 +101,7 @@ class CurrencyConversionScreen extends Component {
 								}}
 							/>
 						</View>
-						<View style={{ flex: 1 }}>
+						<View style={styles.container}>
 							<Text>
 								{`${this.props.amount} ${
 									this.props.fromCurrency
